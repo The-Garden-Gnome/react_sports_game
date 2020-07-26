@@ -80,13 +80,13 @@
                             shotsTaken: newShotsTaken,
                             teamScore: newTeamScore,
                             className: newClassName,
-                            shotPercentage: this.state.newShotsTaken / this.state.newTeamScore
+                            shotPercentage: (currentState.shotsTaken / currentState.teamScore),
                         }
                     }
                     else {
                         return {
                             className: newClassName,
-                            shotPercentage: this.state.newShotsTaken / this.state.newTeamScore,
+                            shotPercentage: (currentState.shotsTaken / currentState.teamScore),
                             shotsTaken: newShotsTaken
                         }
                     }
