@@ -26,17 +26,24 @@
             constructor(props) {
                 super(props)
 
-
+                this.state = {
+                    venue:"Firebase Delphi",
+                }
             }
 
                 render() {
                     return (
-                        <div className="mainBody"><img src="media/destiny_icon.png" id="logo" />
-                            <h1>Welcome to {this.props.venue}!</h1>
+                        <div className="mainContainer">
+                        <div className="header">
+                            <img src="media/destiny_icon.png" id="logo" />
+                            <h1>Welcome to {this.state.venue}!</h1>
+                        </div>
+                        <div className="mainBody">
                             <div className="alphaLeft"><TeamOne />
                             </div>
                             <div className="bravoRight"><TeamTwo />
                             </div>
+                        </div>
                             <div className="bottom">
                             </div>
                         </div>
@@ -54,6 +61,8 @@
                     logo: <img src="media/alpha.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
+                    shotPercentage: 0,
+                    className:"hidden"
                 }
 
             }
@@ -64,14 +73,20 @@
                     const newTeamScore = currentState.teamScore + 1
                     let myAudioElement = new Audio('media/vex_mythoclast.mp3');
                     myAudioElement.play()
+                    let newClassName
+                    newClassName = "display"
                     if (Math.round(Math.random()) > 0) {
                         return {
                             shotsTaken: newShotsTaken,
-                            teamScore: newTeamScore
+                            teamScore: newTeamScore,
+                            className: newClassName,
+                            shotPercentage: this.state.newShotsTaken / this.state.newTeamScore
                         }
                     }
                     else {
                         return {
+                            className: newClassName,
+                            shotPercentage: this.state.newShotsTaken / this.state.newTeamScore,
                             shotsTaken: newShotsTaken
                         }
                     }
@@ -88,6 +103,7 @@
                         <ul>
                             <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
                             <li><strong>Team Score: </strong>{this.state.teamScore}</li>
+                            <li className={this.state.className}><strong>Shot Percentage: </strong>{this.state.shotPercentage}</li>
                         </ul>
                         <br />
                         <button onClick={this.takeShot}>Fire!</button>
@@ -105,6 +121,7 @@
                     logo: <img src="media/bravo.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
+                    shotPercentage: 0,
                 }
             }
 

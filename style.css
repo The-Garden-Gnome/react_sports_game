@@ -35,9 +35,16 @@ h1 {
     margin-bottom: 0px;
 }
 
+.header{
+    margin:  0 auto;
+    justify-content: center;
+    position: relative;
+    display: flex;
+}
+
 img#logo {
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
 }
 
 button {
@@ -46,16 +53,21 @@ button {
 }
 
 .mainBody {
+    width: max-content;
+    position: relative;
     display: flex;
+    margin:  0 auto;
+    justify-content: center;
+    z-index: 5;
     justify-content: space-between;
     padding: 10px 10px 5px 10px;
-    width: 750px;
 }
 .alphaLeft {
     display: flex;
     border: 1px solid black;
     border-bottom: 5px solid #28b1f7;
     padding: 5px 5px 5px 5px;
+    margin: 10px 100px 5px 10px;
     border-radius: 10px;
     flex-direction: column;
     background-color: #e5e8ee;
@@ -66,8 +78,9 @@ button {
     border-bottom: 5px solid #28b1f7;
     border-radius: 10px;
     padding: 5px 5px 5px 5px;
+    margin: 10px 10px 5px 100px;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: right;
     background-color: #e5e8ee;
 }
 .bottom {
@@ -75,4 +88,11 @@ button {
     width: max-content;
     border-radius: 10px;
     margin:  25px auto 0px;
+}
+
+.hidden {
+    display: none;
+}
+.display {
+    display: contents;
 }
