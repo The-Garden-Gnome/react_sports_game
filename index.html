@@ -25,12 +25,14 @@
         class Game extends React.Component {
             constructor(props) {
                 super(props)
+
+
             }
 
                 render() {
                     return (
-                        <div className="mainBody"><img src="images/destiny_icon.png" id="logo" />
-                            <h1>Sports Game Reborn!</h1>
+                        <div className="mainBody"><img src="media/destiny_icon.png" id="logo" />
+                            <h1>Welcome to {this.props.venue}!</h1>
                             <div className="alphaLeft"><TeamOne />
                             </div>
                             <div className="bravoRight"><TeamTwo />
@@ -49,7 +51,7 @@
 
                 this.state = {
                     name: "Alpha(Home Team)",
-                    logo: <img src="images/alpha.png" />,
+                    logo: <img src="media/alpha.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
                 }
@@ -60,6 +62,8 @@
                 this.setState((currentState) => {
                     const newShotsTaken = currentState.shotsTaken + 1
                     const newTeamScore = currentState.teamScore + 1
+                    let myAudioElement = new Audio('media/vex_mythoclast.mp3');
+                    myAudioElement.play()
                     if (Math.round(Math.random()) > 0) {
                         return {
                             shotsTaken: newShotsTaken,
@@ -98,7 +102,7 @@
 
                 this.state = {
                     name: "Bravo(Away Team)",
-                    logo: <img src="images/bravo.png" />,
+                    logo: <img src="media/bravo.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
                 }
@@ -108,6 +112,8 @@
                 this.setState((currentState) => {
                     const newShotsTaken = currentState.shotsTaken + 1
                     const newTeamScore = currentState.teamScore + 1
+                    let myAudioElement = new Audio('media/vex_mythoclast.mp3');
+                    myAudioElement.play()
                     if (Math.round(Math.random()) > 0) {
                         return {
                             shotsTaken: newShotsTaken,
