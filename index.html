@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        function App(props) {
+            return (
+                <div>
+                    <h1>Sports Game Reborn!</h1>
+                    <ul>
+                        <li><TeamOne /></li>
+                        <li><TeamTwo /></li>
+                    </ul>
+                </div>
+            )
+        }
+
+        class TeamOne extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    name: "Alpha",
+                    logo: <img src="images/alpha.png" />,
+                    shotsTaken: 0,
+                    teamScore: 0,
+                }
+
+            }
+
+            takeShot = (event) => {
+                this.setState((currentState) => {
+                    const newShotsTaken = currentState.shotsTaken + 1
+                    const newTeamScore = currentState.teamScore + 1
+                    if (Math.round(Math.random()) > 0) {
+                     return {   
+                        shotsTaken: newShotsTaken,
+                         teamScore: newTeamScore
+                     }
+                    }
+                     else{
+                         return {
+                             shotsTaken: newShotsTaken
+                         }
+                     }
+                    
+                }
+                )
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h2>{this.state.name}</h2>
+                        {this.state.logo}
+                        <ul>
+                            <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
+                            <li><strong>Team Score: </strong>{this.state.teamScore}</li>
+                        </ul>
+                        <br />
+                        <button onClick={this.takeShot}>Fire!</button>
+                    </div>
+                )
+            }
+        }
+
+        class TeamTwo extends React.Component {
+            constructor(props) {
+                super(props);
+
+                this.state = {
+                    name: "Bravo",
+                    logo: <img src="images/bravo.png" />,
+                    shotsTaken: 0,
+                    teamScore: 0,
+                }
+            }
+
+            takeShot = (event) => {
+                this.setState((currentState) => {
+                    const newShotsTaken = currentState.shotsTaken + 1
+                    const newTeamScore = currentState.teamScore + 1
+                    if (Math.round(Math.random()) > 0) {
+                     return {   
+                        shotsTaken: newShotsTaken,
+                         teamScore: newTeamScore
+                     }
+                    }
+                     else{
+                         return {
+                             shotsTaken: newShotsTaken
+                         }
+                     }
+                    
+                }
+                )
+            }
+
+            render() {
+                return (
+                    <div>
+                        <h1>{this.state.name}</h1>
+                        {this.state.logo}
+                        <ul>
+                            <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
+                            <li><strong>Team Score: </strong>{this.state.teamScore}</li>
+                        </ul>
+                        <br />
+                        <button onClick={this.takeShot}>Fire!</button>
+                    </div>
+                )
+            }
+        }
+
+
+
+        ReactDOM.render(<App />, document.getElementById('root')
+
+        )
+    </script>
+</body>
+
+</html>
