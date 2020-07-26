@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -17,22 +18,37 @@
     <script type="text/babel">
         function App(props) {
             return (
-                <div>
-                    <h1>Sports Game Reborn!</h1>
-                    <ul>
-                        <li><TeamOne /></li>
-                        <li><TeamTwo /></li>
-                    </ul>
-                </div>
+                <Game />
             )
         }
+
+        class Game extends React.Component {
+            constructor(props) {
+                super(props)
+            }
+
+                render() {
+                    return (
+                        <div className="mainBody"><img src="images/destiny_icon.png" id="logo" />
+                            <h1>Sports Game Reborn!</h1>
+                            <div className="alphaLeft"><TeamOne />
+                            </div>
+                            <div className="bravoRight"><TeamTwo />
+                            </div>
+                            <div className="bottom">
+                            </div>
+                        </div>
+                    )
+                }
+            }
+        
 
         class TeamOne extends React.Component {
             constructor(props) {
                 super(props)
 
                 this.state = {
-                    name: "Alpha",
+                    name: "Alpha(Home Team)",
                     logo: <img src="images/alpha.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
@@ -45,24 +61,24 @@
                     const newShotsTaken = currentState.shotsTaken + 1
                     const newTeamScore = currentState.teamScore + 1
                     if (Math.round(Math.random()) > 0) {
-                     return {   
-                        shotsTaken: newShotsTaken,
-                         teamScore: newTeamScore
-                     }
+                        return {
+                            shotsTaken: newShotsTaken,
+                            teamScore: newTeamScore
+                        }
                     }
-                     else{
-                         return {
-                             shotsTaken: newShotsTaken
-                         }
-                     }
-                    
+                    else {
+                        return {
+                            shotsTaken: newShotsTaken
+                        }
+                    }
+
                 }
                 )
             }
 
             render() {
                 return (
-                    <div>
+                    <div className="">
                         <h2>{this.state.name}</h2>
                         {this.state.logo}
                         <ul>
@@ -81,7 +97,7 @@
                 super(props);
 
                 this.state = {
-                    name: "Bravo",
+                    name: "Bravo(Away Team)",
                     logo: <img src="images/bravo.png" />,
                     shotsTaken: 0,
                     teamScore: 0,
@@ -93,17 +109,17 @@
                     const newShotsTaken = currentState.shotsTaken + 1
                     const newTeamScore = currentState.teamScore + 1
                     if (Math.round(Math.random()) > 0) {
-                     return {   
-                        shotsTaken: newShotsTaken,
-                         teamScore: newTeamScore
-                     }
+                        return {
+                            shotsTaken: newShotsTaken,
+                            teamScore: newTeamScore
+                        }
                     }
-                     else{
-                         return {
-                             shotsTaken: newShotsTaken
-                         }
-                     }
-                    
+                    else {
+                        return {
+                            shotsTaken: newShotsTaken
+                        }
+                    }
+
                 }
                 )
             }
@@ -111,7 +127,7 @@
             render() {
                 return (
                     <div>
-                        <h1>{this.state.name}</h1>
+                        <h2>{this.state.name}</h2>
                         {this.state.logo}
                         <ul>
                             <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
