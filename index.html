@@ -16,27 +16,12 @@
     <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-        function App(props) {
-            return (
-                <Game />
-            )
-        }
-
-        class Game extends React.Component {
-            constructor(props) {
-                super(props)
-
-                this.state = {
-                    venue:"Firebase Delphi",
-                }
-            }
-
-                render() {
-                    return (
-                        <div className="mainContainer">
+        function Game(props){
+                return (
+                    <div className="mainContainer">
                         <div className="header">
                             <img src="media/destiny_icon.png" id="logo" />
-                            <h1>Welcome to {this.state.venue}!</h1>
+                            <h1>Welcome to {props.venue}!</h1>
                         </div>
                         <div className="mainBody">
                             <div className="alphaLeft"><TeamOne />
@@ -44,17 +29,28 @@
                             <div className="bravoRight"><TeamTwo />
                             </div>
                         </div>
-                            <div className="bottom">
-                            </div>
+                        <div className="bottom">
                         </div>
-                    )
-                }
+                    </div>
+                )
             }
-        
+
+            function App(props) {
+            return (
+                <div className="App">
+                <Game venue="Firebase Delphi" />
+                <Game venue="First Light" />
+                </div>
+            )
+        }
 
         class TeamOne extends React.Component {
             constructor(props) {
                 super(props)
+
+                this.myAudioElement = new Audio('media/vex_mythoclast.mp3');
+                this.scoreAudio = new Audio('media/crucible_kill.mp3');
+
 
                 this.state = {
                     name: "Alpha(Home Team)",
@@ -62,49 +58,55 @@
                     shotsTaken: 0,
                     teamScore: 0,
                     shotPercentage: 0,
-                    className:"hidden"
                 }
 
             }
 
-            takeShot = (event) => {
-                this.setState((currentState) => {
-                    const newShotsTaken = currentState.shotsTaken + 1
-                    const newTeamScore = currentState.teamScore + 1
-                    let myAudioElement = new Audio('media/vex_mythoclast.mp3');
-                    myAudioElement.play()
-                    let newClassName
-                    newClassName = "display"
-                    if (Math.round(Math.random()) > 0) {
-                        return {
-                            shotsTaken: newShotsTaken,
-                            teamScore: newTeamScore,
-                            className: newClassName,
-                            shotPercentage: (currentState.shotsTaken / currentState.teamScore),
-                        }
-                    }
-                    else {
-                        return {
-                            className: newClassName,
-                            shotPercentage: (currentState.shotsTaken / currentState.teamScore),
-                            shotsTaken: newShotsTaken
-                        }
-                    }
 
+
+            takeShot = (event) => {
+                let teamScore = this.state.teamScore
+                this.myAudioElement.play()
+
+                let newClassName
+                newClassName = "display"
+
+                if (Math.random() > 0.5) {
+                    teamScore += 1
+                    setTimeout(() => {
+                        this.scoreAudio.play()
+                    }, 1000)
                 }
-                )
+
+                this.setState((state, props) => ({
+                    shotsTaken: state.shotsTaken + 1,
+                    teamScore
+                }))
             }
 
             render() {
+                let shotPercentageDiv
+
+                if (this.state.shotsTaken) {
+                    const shotPercentage = Math.round((this.state.teamScore / this.state.shotsTaken * 100))
+                    shotPercentageDiv = (
+                        <div>
+                            <li><strong>Shooting %:</strong> {shotPercentage}</li>
+                        </div>
+                    )
+                }
+
                 return (
-                    <div className="">
+                    <div className="Team">
                         <h2>{this.state.name}</h2>
                         {this.state.logo}
-                        <ul>
-                            <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
-                            <li><strong>Team Score: </strong>{this.state.teamScore}</li>
-                            <li className={this.state.className}><strong>Shot Percentage: </strong>{this.state.shotPercentage}</li>
-                        </ul>
+                        <div className="stats">
+                            <ul>
+                                <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
+                                <li><strong>Team Score: </strong>{this.state.teamScore}</li>
+                                {shotPercentageDiv}
+                            </ul>
+                        </div>
                         <br />
                         <button onClick={this.takeShot}>Fire!</button>
                     </div>
@@ -116,6 +118,9 @@
             constructor(props) {
                 super(props);
 
+                this.myAudioElement = new Audio('media/vex_mythoclast.mp3');
+                this.scoreAudio = new Audio('media/crucible_kill.mp3');
+
                 this.state = {
                     name: "Bravo(Away Team)",
                     logo: <img src="media/bravo.png" />,
@@ -126,36 +131,48 @@
             }
 
             takeShot = (event) => {
-                this.setState((currentState) => {
-                    const newShotsTaken = currentState.shotsTaken + 1
-                    const newTeamScore = currentState.teamScore + 1
-                    let myAudioElement = new Audio('media/vex_mythoclast.mp3');
-                    myAudioElement.play()
-                    if (Math.round(Math.random()) > 0) {
-                        return {
-                            shotsTaken: newShotsTaken,
-                            teamScore: newTeamScore
-                        }
-                    }
-                    else {
-                        return {
-                            shotsTaken: newShotsTaken
-                        }
-                    }
+                let teamScore = this.state.teamScore
+                this.myAudioElement.play()
 
+                let newClassName
+                newClassName = "display"
+
+                if (Math.random() > 0.5) {
+                    teamScore += 1
+                    setTimeout(() => {
+                        this.scoreAudio.play()
+                    }, 1000)
                 }
-                )
+
+                this.setState((state, props) => ({
+                    shotsTaken: state.shotsTaken + 1,
+                    teamScore
+                }))
             }
 
             render() {
+                let shotPercentageDiv
+
+                if (this.state.shotsTaken) {
+                    const shotPercentage = Math.round((this.state.teamScore / this.state.shotsTaken * 100))
+                    shotPercentageDiv = (
+                        <div>
+                            <li><strong>Shooting %:</strong> {shotPercentage}</li>
+                        </div>
+                    )
+                }
+
                 return (
-                    <div>
+                    <div className="Team">
                         <h2>{this.state.name}</h2>
                         {this.state.logo}
-                        <ul>
-                            <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
-                            <li><strong>Team Score: </strong>{this.state.teamScore}</li>
-                        </ul>
+                        <div className="stats">
+                            <ul>
+                                <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
+                                <li><strong>Team Score: </strong>{this.state.teamScore}</li>
+                                {shotPercentageDiv}
+                            </ul>
+                        </div>
                         <br />
                         <button onClick={this.takeShot}>Fire!</button>
                     </div>
