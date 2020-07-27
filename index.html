@@ -16,170 +16,178 @@
     <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
-        function Game(props){
-                return (
-                    <div className="mainContainer">
-                        <div className="header">
-                            <img src="media/destiny_icon.png" id="logo" />
-                            <h1>Welcome to {props.venue}!</h1>
-                        </div>
-                        <div className="mainBody">
-                            <div className="alphaLeft"><TeamOne />
-                            </div>
-                            <div className="bravoRight"><TeamTwo />
-                            </div>
-                        </div>
-                        <div className="bottom">
-                        </div>
-                    </div>
-                )
-            }
 
-            function App(props) {
+        function App(props) {
+            const alpha = {
+                name: "Alpha",
+                logoSrc: 'media/alpha.png'
+            }
+            const bravo = {
+                name: "Bravo",
+                logoSrc: 'media/bravo.png'
+            }
             return (
                 <div className="App">
-                <Game venue="Firebase Delphi" />
-                <Game venue="First Light" />
+                    <Game
+                        venue="Firebase Delphi"
+                        alpha={alpha}
+                        bravo={bravo} />
+                    <Game
+                        venue="First Light"
+                        alpha={alpha}
+                        bravo={bravo} />
                 </div>
             )
         }
 
-        class TeamOne extends React.Component {
+        function Team(props) {
+            let shotPercentageDiv
+
+            if (props.stats.shots) {
+                const shotPercentage = Math.round((props.stats.score / props.stats.shots * 100))
+                shotPercentageDiv = (
+                    <div>
+                        <li><strong>Shooting %:</strong> {shotPercentage}</li>
+                    </div>
+                )
+            }
+
+            return (
+                <div className="Team">
+                    <h2>{props.name}</h2>
+                    <img src={props.logoSrc} />
+                    <div className="stats">
+                        <ul>
+                            <li><strong>Shots Taken: </strong>{props.stats.shots}</li>
+                            <li><strong>Team Score: </strong>{props.stats.score}</li>
+                            {shotPercentageDiv}
+                        </ul>
+                    </div>
+                    <br />
+                    <button onClick={props.takeShot}>Fire!</button>
+                </div>
+            )
+        }
+
+        function ScoreBoard(props) {
+            return(
+                <div className="ScoreBoard">
+                    <div className="teamStats">
+                        <h4>Alpha</h4>
+                        <h4 className="score">{props.alphaTeamStats.score}</h4>
+                    </div>
+                    <h3>ScoreBoard</h3>
+                    
+                    <div className="teamStats">
+                        <h4>Bravo</h4>
+                        <h4 className="score">{props.bravoTeamStats.score}</h4>
+                    </div>
+                </div> 
+            )
+        }
+
+        class Game extends React.Component {
             constructor(props) {
                 super(props)
 
-                this.myAudioElement = new Audio('media/vex_mythoclast.mp3');
-                this.scoreAudio = new Audio('media/crucible_kill.mp3');
-
-
                 this.state = {
-                    name: "Alpha(Home Team)",
-                    logo: <img src="media/alpha.png" />,
-                    shotsTaken: 0,
-                    teamScore: 0,
-                    shotPercentage: 0,
+                    resetCount:0,
+
+                    alphaTeamStats: {
+                        shots: 0,
+                        score: 0,
+                    },
+
+                    bravoTeamStats: {
+                        shots: 0,
+                        score: 0,
+                    }
                 }
 
+                this.myAudioElement = new Audio('media/vex_mythoclast.mp3');
+                this.scoreAudio = new Audio('media/crucible_kill.mp3');
+                this.resetSound = new Audio('media/get_back_out_there.mp3');
             }
 
-
-
-            takeShot = (event) => {
-                let teamScore = this.state.teamScore
+            shoot = (team) => {
+                const teamStatsKey = `${team}TeamStats`
+                let score = this.state[teamStatsKey].score
                 this.myAudioElement.play()
 
-                let newClassName
-                newClassName = "display"
-
                 if (Math.random() > 0.5) {
-                    teamScore += 1
+                    score += 1
+
                     setTimeout(() => {
                         this.scoreAudio.play()
                     }, 1000)
                 }
 
                 this.setState((state, props) => ({
-                    shotsTaken: state.shotsTaken + 1,
-                    teamScore
+                    [teamStatsKey]: {
+                        shots: state[teamStatsKey].shots + 1,
+                        score
+                    }
                 }))
             }
 
-            render() {
-                let shotPercentageDiv
-
-                if (this.state.shotsTaken) {
-                    const shotPercentage = Math.round((this.state.teamScore / this.state.shotsTaken * 100))
-                    shotPercentageDiv = (
-                        <div>
-                            <li><strong>Shooting %:</strong> {shotPercentage}</li>
-                        </div>
-                    )
-                }
-
-                return (
-                    <div className="Team">
-                        <h2>{this.state.name}</h2>
-                        {this.state.logo}
-                        <div className="stats">
-                            <ul>
-                                <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
-                                <li><strong>Team Score: </strong>{this.state.teamScore}</li>
-                                {shotPercentageDiv}
-                            </ul>
-                        </div>
-                        <br />
-                        <button onClick={this.takeShot}>Fire!</button>
-                    </div>
-                )
-            }
-        }
-
-        class TeamTwo extends React.Component {
-            constructor(props) {
-                super(props);
-
-                this.myAudioElement = new Audio('media/vex_mythoclast.mp3');
-                this.scoreAudio = new Audio('media/crucible_kill.mp3');
-
-                this.state = {
-                    name: "Bravo(Away Team)",
-                    logo: <img src="media/bravo.png" />,
-                    shotsTaken: 0,
-                    teamScore: 0,
-                    shotPercentage: 0,
-                }
-            }
-
-            takeShot = (event) => {
-                let teamScore = this.state.teamScore
-                this.myAudioElement.play()
-
-                let newClassName
-                newClassName = "display"
-
-                if (Math.random() > 0.5) {
-                    teamScore += 1
-                    setTimeout(() => {
-                        this.scoreAudio.play()
-                    }, 1000)
-                }
-
+            resetGame = () =>{
+                this.resetSound.play()
                 this.setState((state, props) => ({
-                    shotsTaken: state.shotsTaken + 1,
-                    teamScore
+                    resetCount: state.resetCount + 1,
+                    alphaTeamStats: {
+                        shots: 0,
+                        score: 0,
+                    },
+                    bravoTeamStats: {
+                        shots: 0,
+                        score: 0,
+                    }
                 }))
             }
 
             render() {
-                let shotPercentageDiv
-
-                if (this.state.shotsTaken) {
-                    const shotPercentage = Math.round((this.state.teamScore / this.state.shotsTaken * 100))
-                    shotPercentageDiv = (
-                        <div>
-                            <li><strong>Shooting %:</strong> {shotPercentage}</li>
-                        </div>
-                    )
-                }
-
                 return (
-                    <div className="Team">
-                        <h2>{this.state.name}</h2>
-                        {this.state.logo}
-                        <div className="stats">
-                            <ul>
-                                <li><strong>Shots Taken: </strong>{this.state.shotsTaken}</li>
-                                <li><strong>Team Score: </strong>{this.state.teamScore}</li>
-                                {shotPercentageDiv}
-                            </ul>
+                    <div className="Game">
+                        <div className="mainContainer">
+                            <div className="header">
+                                <img src="media/destiny_icon.png" id="logo" />
+                                <h1>Welcome to {this.props.venue}! </h1>
+                            </div>
+                            <div className="ScoreBoard"><ScoreBoard 
+                                alphaTeamStats={this.state.alphaTeamStats}
+                                bravoTeamStats={this.state.bravoTeamStats}
+                            /></div>
+                            <div className="resetCount">
+                                <strong>Resets: </strong>{this.state.resetCount}
+                                </div>
+                                <div className="resetButton">
+                                <button onClick={this.resetGame}>Reset Game</button>
+                                </div>
+                            <div className="mainBody">
+                                <div className="alphaLeft">
+                                    <Team
+                                        name={this.props.alpha.name}
+                                        logoSrc={this.props.alpha.logoSrc}
+                                        stats={this.state.alphaTeamStats}
+                                        takeShot={() => this.shoot('alpha')}
+                                    />
+                                </div>
+                                <div className="bravoRight">
+                                    <Team
+                                        name={this.props.bravo.name}
+                                        logoSrc={this.props.bravo.logoSrc}
+                                        stats={this.state.bravoTeamStats}
+                                        takeShot={() => this.shoot('bravo')}
+                                    />
+                                </div>
+                            </div>
+                            <div className="bottom">
+                            </div>
                         </div>
-                        <br />
-                        <button onClick={this.takeShot}>Fire!</button>
                     </div>
                 )
             }
         }
-
 
 
         ReactDOM.render(<App />, document.getElementById('root')
